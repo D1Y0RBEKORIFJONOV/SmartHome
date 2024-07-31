@@ -4,17 +4,15 @@ import "time"
 
 type (
 	DeleteUserReq struct {
-		UserID       string `json:"user_id" bson:"user_id"`
+		UserID       string `json:"id" bson:"_id,omitempty"`
 		IsHardDelete bool   `json:"is_hard_delete" bson:"is_hard_delete"`
 	}
 
 	GetAllUserReq struct {
-		Field   string `json:"field" bson:"field"`
-		Value   string `json:"value" bson:"value"`
-		Page    string `json:"page" bson:"page"`
-		Limit   string `json:"limit" bson:"limit"`
-		StartAt string `json:"start_at" bson:"start_at"`
-		EndAt   string `json:"end_at" bson:"end_at"`
+		Field string `json:"field" bson:"field"`
+		Value string `json:"value" bson:"value"`
+		Page  int64  `json:"page" bson:"page"`
+		Limit int64  `json:"limit" bson:"limit"`
 	}
 
 	GetAllUserRes struct {
@@ -28,17 +26,19 @@ type (
 	}
 
 	UpdateUserReq struct {
+		UserID    string `json:"id" bson:"_id,omitempty"`
 		FirstName string `json:"first_name" bson:"first_name"`
 		LastName  string `json:"last_name" bson:"last_name"`
 	}
 
 	UpdatePasswordReq struct {
+		UserID      string `json:"id" bson:"_id,omitempty"`
 		Password    string `json:"password" bson:"password"`
 		NewPassword string `json:"new_password" bson:"new_password"`
 	}
 
 	UpdateEmailReq struct {
-		Password string `json:"password" bson:"password"`
+		UserID   string `json:"id" bson:"_id,omitempty"`
 		NewEmail string `json:"new_email" bson:"new_email"`
 	}
 
@@ -46,9 +46,12 @@ type (
 		Email    string `json:"email" bson:"email"`
 		Password string `json:"password" bson:"password"`
 	}
-
+	Token struct {
+		AccessToken  string `json:"access_token" bson:"access_token"`
+		RefreshToken string `json:"refresh_token" bson:"refresh_token"`
+	}
 	LoginRes struct {
-		Token string `json:"token" bson:"token"`
+		Token Token `json:"token" bson:"token"`
 	}
 
 	StatusUser struct {
@@ -68,7 +71,7 @@ type (
 		LastName  string  `json:"last_name" bson:"last_name"`
 		Email     string  `json:"email" bson:"email"`
 		Password  string  `json:"password" bson:"password"`
-		ID        string  `json:"id" bson:"id"`
+		ID        string  `json:"id" bson:"_id,omitempty"`
 		Profile   Profile `json:"profile" bson:"profile"`
 	}
 

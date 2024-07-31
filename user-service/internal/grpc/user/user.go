@@ -33,6 +33,7 @@ func (u *userServiceServer) CreateUser(ctx context.Context, req *user1.CreateUSe
 		FirstName: req.FirstName,
 		Password:  req.Password,
 		Email:     req.Email,
+		Address:   req.Address,
 	})
 	if err != nil {
 		return &user1.StatusUser{
@@ -59,12 +60,15 @@ func (u *userServiceServer) Login(ctx context.Context, req *user1.LoginReq) (*us
 		return nil, err
 	}
 	return &user1.LoginRes{
-		Token: tokenRes.Token,
+		Tokens: &user1.Token{
+			AccessToken:  tokenRes.Token.AccessToken,
+			RefreshToken: tokenRes.Token.RefreshToken,
+		},
 	}, nil
 }
 
 func (u *userServiceServer) UpdateUser(ctx context.Context, req *user1.UpdateUserReq) (*user1.StatusUser, error) {
-	if req.LastName == "" || req.FirstName == "" {
+	if req.LastName == "" && req.FirstName == "" {
 		return &user1.StatusUser{
 				Successfully: false,
 			}, entity.ErrBadRequest{
@@ -72,6 +76,7 @@ func (u *userServiceServer) UpdateUser(ctx context.Context, req *user1.UpdateUse
 			}
 	}
 	err := u.user.UpdateUser(ctx, &entity.UpdateUserReq{
+		UserID:    req.UserId,
 		LastName:  req.LastName,
 		FirstName: req.FirstName,
 	})
@@ -96,7 +101,8 @@ func (u *userServiceServer) UpdatePassword(ctx context.Context, req *user1.Updat
 	}
 
 	err := u.user.UpdateUserPassword(ctx, &entity.UpdatePasswordReq{
-		Password:    req.NewPassword,
+		UserID:      req.UserId,
+		Password:    req.Password,
 		NewPassword: req.NewPassword,
 	})
 	if err != nil {
@@ -111,7 +117,7 @@ func (u *userServiceServer) UpdatePassword(ctx context.Context, req *user1.Updat
 }
 
 func (u *userServiceServer) UpdateEmail(ctx context.Context, req *user1.UpdateEmailReq) (*user1.StatusUser, error) {
-	if req.Password == "" || req.NewEmail == "" {
+	if req.UserId == "" || req.NewEmail == "" {
 		return &user1.StatusUser{
 				Successfully: false,
 			}, entity.ErrBadRequest{
@@ -119,8 +125,8 @@ func (u *userServiceServer) UpdateEmail(ctx context.Context, req *user1.UpdateEm
 			}
 	}
 	err := u.user.UpdateUserEmail(ctx, &entity.UpdateEmailReq{
+		UserID:   req.UserId,
 		NewEmail: req.NewEmail,
-		Password: req.NewEmail,
 	})
 	if err != nil {
 		return &user1.StatusUser{
@@ -166,12 +172,10 @@ func (u *userServiceServer) GetUser(ctx context.Context, req *user1.GetUserReq) 
 func (u *userServiceServer) GetAllUser(ctx context.Context, req *user1.GetAllUserReq) (*user1.GetAllUserRes, error) {
 
 	users, err := u.user.GetAllUser(ctx, &entity.GetAllUserReq{
-		Value:   req.Value,
-		Field:   req.Filed,
-		Page:    req.Page,
-		Limit:   req.Limit,
-		StartAt: req.StartAt,
-		EndAt:   req.EndAt,
+		Value: req.Value,
+		Field: req.Filed,
+		Page:  req.Page,
+		Limit: req.Limit,
 	})
 	if err != nil {
 		return &user1.GetAllUserRes{}, err
@@ -192,6 +196,7 @@ func (u *userServiceServer) GetAllUser(ctx context.Context, req *user1.GetAllUse
 				Address:   user.Profile.Address,
 			},
 		})
+		res.Count += 1
 	}
 	return &res, nil
 }

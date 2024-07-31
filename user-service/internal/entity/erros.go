@@ -13,6 +13,7 @@ var (
 	ErrReqIsEmpty         = fmt.Errorf("req is empty")
 	ErrUserNotRegistered  = fmt.Errorf("user not registered")
 	ErrUserDeleted        = fmt.Errorf("user is deleted")
+	ErrUserIsEmpty        = fmt.Errorf("user is empty")
 )
 
 var (
