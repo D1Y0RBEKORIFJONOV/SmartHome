@@ -1,0 +1,143 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+    networks:
+      - smarthome-network
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+  api_gateway:
+    build: ./api_gateway
+    container_name: api_gateway
+    ports:
+      - "9002:9002"
+    depends_on:
+      - user_service
+      - device_service
+      - consumer_device
+      - consumer_user
+      - rabbitmq
+      - redis
+    networks:
+      - smarthome-network
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+      - REDIS_URL=redis:6379
+      - CONTEXT_TIMEOUT=30s
+      - HTTP_PORT=:9002
+
+  user_service:
+    build: ./user-service
+    container_name: user_service
+    ports:
+      - "9000:9000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - RABBITMQ_URI=amqp://guest:guest@rabbitmq:5672/
+    depends_on:
+      - mongo
+      - redis
+      - rabbitmq
+    networks:
+      - smarthome-network
+    volumes:
+      - user-service-data:/app/data
+
+  device_service:
+    build:
+      context: ./device_service
+      dockerfile: Dockerfile
+    container_name: device_service
+    ports:
+      - "9001:9001"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - RABBITMQ_URI=amqp://guest:guest@rabbitmq:5672/
+    depends_on:
+      - mongo
+      - redis
+      - rabbitmq
+    networks:
+      - smarthome-network
+    volumes:
+      - device-service-data:/app/data
+
+  consumer_device:
+    build:
+      context: ./device_service
+      dockerfile: Dockerfile.consumer
+    container_name: consumer_device_service
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - RABBITMQ_URI=amqp://guest:guest@rabbitmq:5672/
+    depends_on:
+      - mongo
+      - redis
+      - rabbitmq
+    networks:
+      - smarthome-network
+    volumes:
+      - consumer-device-data:/app/data
+
+  consumer_user:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile.consumer
+    container_name: consumer_user_service
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - RABBITMQ_URI=amqp://guest:guest@rabbitmq:5672/
+    depends_on:
+      - mongo
+      - redis
+      - rabbitmq
+    networks:
+      - smarthome-network
+    volumes:
+      - consumer-user-data:/app/data
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - smarthome-network
+    volumes:
+      - mongo-data:/data/db
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - smarthome-network
+    volumes:
+      - redis-data:/data
+
+networks:
+  smarthome-network:
+    driver: bridge
+
+volumes:
+  rabbitmq-data:
+  user-service-data:
+  device-service-data:
+  consumer-device-data:
+  consumer-user-data:
+  mongo-data:
+  redis-data:

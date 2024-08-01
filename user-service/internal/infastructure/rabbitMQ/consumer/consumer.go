@@ -6,6 +6,7 @@ import (
 	user1 "github.com/D1Y0RBEKORIFJONOV/SmartHome_Protos/gen/go/user"
 	"github.com/rabbitmq/amqp091-go"
 	"log"
+	"time"
 	"user_service_smart_home/internal/config"
 	"user_service_smart_home/internal/entity"
 	clientgrpcserver "user_service_smart_home/internal/infastructure/client_grpc_server"
@@ -17,9 +18,15 @@ type Consumer struct {
 }
 
 func NewConsumer(cfg *config.Config) (*Consumer, error) {
-	conn, err := amqp091.Dial(cfg.RabbitMQURL)
-	if err != nil {
-		return nil, err
+	var err error
+	var conn *amqp091.Connection
+	for i := 0; i < 10; i++ {
+		conn, err = amqp091.Dial(cfg.RabbitMQURL)
+		if err != nil {
+			log.Println(err)
+			time.Sleep(1 * time.Millisecond)
+			continue
+		}
 	}
 	client, err := conn.Channel()
 	if err != nil {
@@ -91,6 +98,7 @@ func (consumer *Consumer) Consume() error {
 	forever := make(chan bool)
 	go func() {
 		for d := range msgs {
+			log.Printf("Received a message: %s", d.Body)
 			err := json.Unmarshal(d.Body, &ReqType)
 			if err != nil {
 				continue

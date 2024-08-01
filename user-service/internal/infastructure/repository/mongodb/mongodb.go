@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
 	"time"
 	"user_service_smart_home/internal/config"
 	"user_service_smart_home/internal/entity"
@@ -20,6 +21,7 @@ type MongoDB struct {
 
 func NewMongoDB(cfg *config.Config) (*MongoDB, error) {
 	uri := "mongodb://" + cfg.DB.Host + cfg.DB.Port
+	log.Printf("%s", uri)
 	clientOptions := options.Client().ApplyURI(uri)
 
 	client, err := mongo.Connect(context.TODO(), clientOptions)

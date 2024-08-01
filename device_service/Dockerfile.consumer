@@ -1,0 +1,17 @@
+FROM golang:1.22.5-alpine AS build
+
+WORKDIR /src
+
+COPY . .
+
+WORKDIR /src/cmd/consumer
+
+RUN go mod download
+
+RUN go build -o /bin/consumer_app
+
+FROM scratch
+
+COPY --from=build /bin/consumer_app /bin/consumer_app
+
+CMD [ "/bin/consumer_app" ]

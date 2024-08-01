@@ -18,6 +18,7 @@ func main() {
 	appv1 := app.NewApp(cfg, log)
 
 	go appv1.GRPCServer.Run()
+
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
 	sig := <-stop

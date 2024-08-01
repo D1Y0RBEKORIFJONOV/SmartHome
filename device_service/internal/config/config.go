@@ -44,7 +44,7 @@ func New() *Config {
 	config.APP = getEnv("APP", "app")
 	config.Environment = getEnv("ENVIRONMENT", "develop")
 	config.LogLevel = getEnv("LOG_LEVEL", "local")
-	config.RPCPort = getEnv("RPC_PORT", ":9001")
+	config.RPCPort = getEnv("RPC_PORT", "localhost:9001")
 	config.Context.Timeout = getEnv("CONTEXT_TIMEOUT", "30s")
 
 	config.DB.Host = getEnv("MONGO_HOST", "localhost")

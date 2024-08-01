@@ -13,6 +13,7 @@ import (
 	speaker1 "github.com/D1Y0RBEKORIFJONOV/SmartHome_Protos/gen/go/device/speaker"
 	"github.com/rabbitmq/amqp091-go"
 	"log"
+	"time"
 )
 
 type Consumer struct {
@@ -21,9 +22,15 @@ type Consumer struct {
 }
 
 func NewConsumer(cfg *config.Config) (*Consumer, error) {
-	conn, err := amqp091.Dial(cfg.RabbitMQURL)
-	if err != nil {
-		return nil, err
+	var err error
+	var conn *amqp091.Connection
+	for i := 0; i < 10; i++ {
+		conn, err = amqp091.Dial(cfg.RabbitMQURL)
+		if err != nil {
+			log.Println("Failed to connect to RabbitMQ")
+			time.Sleep(1 * time.Millisecond)
+			continue
+		}
 	}
 	client, err := conn.Channel()
 	if err != nil {
@@ -127,10 +134,11 @@ func (consumer *Consumer) Consume() error {
 
 func (consumer *Consumer) handleAddTvToUser(body []byte) {
 	var req tv_entity.AddTVReq
+	log.Printf("%v", string(body))
 	if err := json.Unmarshal(body, &req); err != nil {
 		return
 	}
-
+	log.Printf("\n%s\n", req)
 	_, err := consumer.clientDevice.TvService().AddTV(context.Background(), &tv1.AddTVReq{
 		UserId:    req.UserID,
 		ModelName: req.ModelName,

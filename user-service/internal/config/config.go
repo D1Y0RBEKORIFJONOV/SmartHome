@@ -43,7 +43,7 @@ func New() *Config {
 	config.APP = getEnv("APP", "app")
 	config.Environment = getEnv("ENVIRONMENT", "develop")
 	config.LogLevel = getEnv("LOG_LEVEL", "local")
-	config.RPCPort = getEnv("RPC_PORT", ":9000")
+	config.RPCPort = getEnv("RPC_PORT", "localhost:9000")
 	config.Context.Timeout = getEnv("CONTEXT_TIMEOUT", "30s")
 
 	config.DB.Host = getEnv("MONGO_HOST", "localhost")
@@ -62,7 +62,7 @@ func New() *Config {
 	if err != nil {
 		return nil
 	}
-	config.RabbitMQURL = getEnv("RabbitMQ_URL", "amqp://guest:guest@localhost:5672/")
+	config.RabbitMQURL = getEnv("RABBITMQ_URL", "amqp://guest:guest@localhost:5672/")
 	config.Token.AccessTTL = accessTTl
 	config.Token.RefreshTTL = refreshTTL
 

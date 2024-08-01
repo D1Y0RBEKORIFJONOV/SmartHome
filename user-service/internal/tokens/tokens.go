@@ -1,11 +1,10 @@
 package tokens
 
 import (
+	"github.com/golang-jwt/jwt/v5"
 	"time"
 	"user_service_smart_home/internal/config"
 	"user_service_smart_home/internal/entity"
-
-	"github.com/golang-jwt/jwt/v5"
 )
 
 func NewAccessToken(user *entity.User) (string, error) {
@@ -15,6 +14,7 @@ func NewAccessToken(user *entity.User) (string, error) {
 	claims["uid"] = user.ID
 	claims["email"] = user.Email
 	claims["exp"] = time.Now().Add(cfg.Token.AccessTTL).Unix()
+	claims["role"] = "user"
 
 	tokenString, err := token.SignedString([]byte(config.Token()))
 	if err != nil {
@@ -29,6 +29,8 @@ func NewRefreshToken(user *entity.User) (string, error) {
 	claims := token.Claims.(jwt.MapClaims)
 	claims["uid"] = user.ID
 	claims["exp"] = time.Now().Add(cfg.Token.RefreshTTL).Unix()
+	claims["role"] = "user"
+	claims["email"] = user.Email
 
 	tokenString, err := token.SignedString([]byte(config.Token()))
 	if err != nil {

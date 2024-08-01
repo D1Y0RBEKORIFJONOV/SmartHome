@@ -3,11 +3,12 @@ package tv_server
 import (
 	"context"
 	tv_entity "device_service/internal/entity/tv"
-	"device_service/internal/usecase/tv_usecase/tv"
+	user_tv_service_usecase "device_service/internal/usecase/tv_usecase/tv"
 	"errors"
 	"fmt"
 	tv1 "github.com/D1Y0RBEKORIFJONOV/SmartHome_Protos/gen/go/device/TV"
 	"google.golang.org/grpc"
+	"log"
 )
 
 type TVServer struct {
@@ -23,9 +24,10 @@ func RegisterTVServer(server *grpc.Server, tv user_tv_service_usecase.TVManageme
 
 func (s *TVServer) AddTV(ctx context.Context, req *tv1.AddTVReq) (*tv1.TvStatusMessage, error) {
 	if req.UserId == "" || req.ModelName == "" {
+		log.Printf(req.UserId, req.ModelName, ">>>>>>>>>>>>>")
 		return &tv1.TvStatusMessage{
 			Successfully: false,
-		}, errors.New("user id or model name is empty")
+		}, errors.New("userId or modelName is empty" + req.UserId + req.ModelName)
 	}
 
 	err := s.tv.AddTvToUser(ctx, &tv_entity.AddTVReq{

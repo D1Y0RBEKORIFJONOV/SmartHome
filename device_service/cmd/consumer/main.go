@@ -10,7 +10,7 @@ func main() {
 	cfg := config.New()
 	consumers, err := consumer.NewConsumer(cfg)
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
 	log.Println("consumer started")
 	log.Fatal(consumers.Consume())
