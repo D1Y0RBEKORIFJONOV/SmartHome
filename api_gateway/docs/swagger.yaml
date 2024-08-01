@@ -10,6 +10,13 @@ definitions:
       channel_name:
         type: string
     type: object
+  entity.AddSmartAlarmReq:
+    properties:
+      device_name:
+        type: string
+      model_name:
+        type: string
+    type: object
   entity.AddSpeakerReq:
     properties:
       model_name:
@@ -20,11 +27,25 @@ definitions:
       model_name:
         type: string
     type: object
+  entity.Alarm:
+    properties:
+      alarm_time:
+        type: string
+      remaining_time:
+        type: string
+    type: object
   entity.Channel:
     properties:
       channel_name:
         type: string
       channel_number:
+        type: string
+    type: object
+  entity.CreateAlarmClockReq:
+    properties:
+      clock_time:
+        type: string
+      device_name:
         type: string
     type: object
   entity.CreateUserReq:
@@ -96,6 +117,15 @@ definitions:
       updated_at:
         type: string
     type: object
+  entity.RemainingTimRes:
+    properties:
+      alarms:
+        items:
+          $ref: '#/definitions/entity.Alarm'
+        type: array
+      count:
+        type: integer
+    type: object
   entity.StatusMessage:
     properties:
       message:
@@ -156,6 +186,172 @@ info:
   title: Artisan Connect
   version: "1.0"
 paths:
+  /alarm/clock:
+    get:
+      consumes:
+      - application/json
+      description: Get the remaining time for the alarm
+      parameters:
+      - description: Name of the device
+        in: query
+        name: device_name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.RemainingTimRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Remaining Time
+      tags:
+      - alarm
+    post:
+      consumes:
+      - application/json
+      description: Create a new alarm clock
+      parameters:
+      - description: Create Alarm Clock Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateAlarmClockReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.StatusMessage'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Alarm Clock
+      tags:
+      - alarm
+  /alarm/open/curtain:
+    put:
+      consumes:
+      - application/json
+      description: Open the curtain
+      parameters:
+      - description: Name of the device
+        in: query
+        name: device_name
+        required: true
+        type: string
+      - description: Open command
+        in: query
+        name: open
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.StatusMessage'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Open Curtain
+      tags:
+      - alarm
+  /alarm/open/door:
+    put:
+      consumes:
+      - application/json
+      description: Open the alarm
+      parameters:
+      - description: Name of the device
+        in: query
+        name: device_name
+        required: true
+        type: string
+      - description: Open command
+        in: query
+        name: open
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.StatusMessage'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Open OpenDoor
+      tags:
+      - alarm
+  /alarm/register:
+    post:
+      consumes:
+      - application/json
+      description: Add a new smart alarm
+      parameters:
+      - description: Add Smart Alarm Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.AddSmartAlarmReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.StatusMessage'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: AddAlarm
+      tags:
+      - alarm
   /speaker/channel:
     delete:
       consumes:
@@ -188,7 +384,7 @@ paths:
       - BearerAuth: []
       summary: DeleteChannel
       tags:
-      - television
+      - speaker
     post:
       consumes:
       - application/json
@@ -220,7 +416,7 @@ paths:
       - BearerAuth: []
       summary: AddChannel
       tags:
-      - television
+      - speaker
   /speaker/channel/cursor:
     post:
       consumes:
@@ -251,7 +447,7 @@ paths:
       - BearerAuth: []
       summary: PreviousAndNext
       tags:
-      - television
+      - speaker
   /speaker/open:
     put:
       consumes:
@@ -282,7 +478,7 @@ paths:
       - BearerAuth: []
       summary: OpenSpeaker
       tags:
-      - television
+      - speaker
   /speaker/register:
     post:
       consumes:
@@ -341,7 +537,7 @@ paths:
       - BearerAuth: []
       summary: GetChannels
       tags:
-      - television
+      - speaker
   /speaker/voice:
     post:
       consumes:
@@ -372,7 +568,7 @@ paths:
       - BearerAuth: []
       summary: ControlVoice
       tags:
-      - television
+      - speaker
   /tv/channel:
     delete:
       consumes:

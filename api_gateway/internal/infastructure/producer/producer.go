@@ -3,10 +3,9 @@ package producer
 import (
 	"api_gate_way/internal/config"
 	"context"
+	"github.com/rabbitmq/amqp091-go"
 	"log"
 	"time"
-
-	"github.com/rabbitmq/amqp091-go"
 )
 
 type Producer struct {
@@ -15,8 +14,8 @@ type Producer struct {
 
 func NewProducer(cfg config.Config) (*Producer, error) {
 	producer := Producer{}
-	for i := 0; i < 1; i++ {
-		time.Sleep(time.Millisecond * 1)
+	for i := 0; i < 10; i++ {
+		time.Sleep(time.Second * 1)
 		conn, err := amqp091.Dial(cfg.RabbitMQURL)
 		if err != nil {
 			log.Printf("Failed to open a channel: %s", err)

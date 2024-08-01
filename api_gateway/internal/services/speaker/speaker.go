@@ -145,7 +145,7 @@ func (s *Speaker) AddChannel(ctx context.Context, req *entity.AddChannelReqChann
 	addReq := entity.AddChannelReqPub{
 		UserID:      req.UserID,
 		ChannelName: req.ChannelName,
-		MethodName:  "Speaker.AddChannel",
+		MethodName:  "SPEAKER.AddChannel",
 	}
 	reqBody, err := json.Marshal(addReq)
 	if err != nil {
@@ -169,7 +169,7 @@ func (s *Speaker) DeleteChannel(ctx context.Context, req *entity.DeleteChannelRe
 	deleteReq := entity.DeleteChannelReqPub{
 		UserID:      req.UserID,
 		ChannelName: req.ChannelName,
-		MethodName:  "Speaker.DeleteChannel",
+		MethodName:  "SPEAKER.DeleteChannel",
 	}
 	reqBody, err := json.Marshal(deleteReq)
 	if err != nil {

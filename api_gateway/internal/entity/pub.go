@@ -46,4 +46,18 @@ type (
 		ChannelName string `json:"channel_name" redis:"channel_name"`
 		MethodName  string `json:"method_name" redis:"method_name"`
 	}
+
+	AddSmartAlarmReqPub struct {
+		UserID     string `bson:"user_id" json:"user_id"`
+		DeviceName string `bson:"device_name" json:"device_name"`
+		ModelName  string `bson:"model_name" json:"model_name"`
+		MethodName string `bson:"method_name" json:"method_name"`
+	}
+
+	CreateAlarmClockReqPub struct {
+		UserID     string `bson:"user_id" json:"user_id"`
+		ClockTime  string `bson:"clock_time" json:"clock_time"`
+		DeviceName string `bson:"device_name" json:"device_name"`
+		MethodName string `bson:"method_name" json:"method_name"`
+	}
 )

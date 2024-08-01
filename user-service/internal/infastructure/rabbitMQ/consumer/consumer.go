@@ -24,7 +24,7 @@ func NewConsumer(cfg *config.Config) (*Consumer, error) {
 		conn, err = amqp091.Dial(cfg.RabbitMQURL)
 		if err != nil {
 			log.Println(err)
-			time.Sleep(1 * time.Millisecond)
+			time.Sleep(1 * time.Second)
 			continue
 		}
 	}

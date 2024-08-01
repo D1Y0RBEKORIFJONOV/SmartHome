@@ -28,7 +28,7 @@ func NewConsumer(cfg *config.Config) (*Consumer, error) {
 		conn, err = amqp091.Dial(cfg.RabbitMQURL)
 		if err != nil {
 			log.Println("Failed to connect to RabbitMQ")
-			time.Sleep(1 * time.Millisecond)
+			time.Sleep(1 * time.Second)
 			continue
 		}
 	}

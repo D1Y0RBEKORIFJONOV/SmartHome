@@ -145,17 +145,6 @@ func (u *UserServer) UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": message})
 }
 
-//service  UserService  {
-//rpc CreateUser(CreateUSerReq)returns (StatusUser);
-//rpc Login(LoginReq) returns (LoginRes);
-//rpc UpdateUser(UpdateUserReq)returns (StatusUser);
-//rpc UpdatePassword(UpdatePasswordReq)returns (StatusUser);
-//rpc UpdateEmail(UpdateEmailReq) returns (StatusUser);
-//rpc GetUser(GetUserReq)returns(User);
-//rpc GetAllUser(GetAllUserReq)returns (GetAllUserRes);
-//rpc DeleteUser(DeleteUserReq) returns (StatusUser);
-//}
-
 // UpdatePassword godoc
 // @Summary UpdatePassword
 // @Description Authenticate a user and return a token

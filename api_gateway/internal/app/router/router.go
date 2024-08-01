@@ -3,6 +3,7 @@ package router
 import (
 	"api_gate_way/internal/handler"
 	"api_gate_way/internal/middleware"
+	alarm_usecase "api_gate_way/internal/usecase/alarm"
 	speaker_use_case "api_gate_way/internal/usecase/speaker"
 	"api_gate_way/internal/usecase/tv_use_case"
 	"api_gate_way/internal/usecase/user_usecase"
@@ -11,10 +12,11 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func RegisterRouter(user user_usecase.User, tv tv_use_case.TvUseCaseImpl, speaker speaker_use_case.SpeakerUseCaseImpl) *gin.Engine {
+func RegisterRouter(user user_usecase.User, tv tv_use_case.TvUseCaseImpl, speaker speaker_use_case.SpeakerUseCaseImpl, alarm alarm_usecase.Alarm) *gin.Engine {
 	userHandler := handler.NewUserServer(user)
 	tvHandler := handler.NewTV(tv)
 	spHandler := handler.NewSpeaker(&speaker)
+	alarmHandler := handler.NewAlarm(alarm)
 
 	router := gin.Default()
 
@@ -57,6 +59,15 @@ func RegisterRouter(user user_usecase.User, tv tv_use_case.TvUseCaseImpl, speake
 		speakerGroup.POST("/channel", spHandler.AddChannel)
 		speakerGroup.DELETE("/channel", spHandler.DeleteChannel)
 		speakerGroup.POST("/voice", spHandler.ControlVoice)
+	}
+
+	alarmGroup := router.Group("/alarm")
+	{
+		alarmGroup.POST("/register", alarmHandler.AddAlarm)
+		alarmGroup.PUT("/open/curtain", alarmHandler.OpenCurtain)
+		alarmGroup.GET("/clock", alarmHandler.GetRemainingTime)
+		alarmGroup.POST("/clock", alarmHandler.CreateAlarmClock)
+		alarmGroup.PUT("/open/door", alarmHandler.OpenDoor)
 	}
 
 	return router

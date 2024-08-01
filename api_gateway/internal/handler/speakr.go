@@ -57,7 +57,7 @@ func (t *Speaker) AddSpeaker(c *gin.Context) {
 // OpenSpeaker godoc
 // @Summary OpenSpeaker
 // @Description Add tv to home
-// @Tags television
+// @Tags speaker
 // @Accept json
 // @Produce json
 // @Param open query string false "true or false"
@@ -87,7 +87,7 @@ func (t *Speaker) OpenSpeaker(c *gin.Context) {
 // GetChannels godoc
 // @Summary GetChannels
 // @Description Add tv to home
-// @Tags television
+// @Tags speaker
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -115,7 +115,7 @@ func (t *Speaker) GetChannels(c *gin.Context) {
 // PreviousAndNext godoc
 // @Summary PreviousAndNext
 // @Description Add tv to home
-// @Tags television
+// @Tags speaker
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -145,7 +145,7 @@ func (u *Speaker) PreviousAndNext(c *gin.Context) {
 // AddChannel godoc
 // @Summary AddChannel
 // @Description Add tv to home
-// @Tags television
+// @Tags speaker
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -182,7 +182,7 @@ func (t *Speaker) AddChannel(c *gin.Context) {
 // DeleteChannel godoc
 // @Summary DeleteChannel
 // @Description Add tv to home
-// @Tags television
+// @Tags speaker
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -218,7 +218,7 @@ func (t *Speaker) DeleteChannel(c *gin.Context) {
 // ControlVoice godoc
 // @Summary ControlVoice
 // @Description Add tv to home
-// @Tags television
+// @Tags speaker
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth

@@ -2,6 +2,7 @@ package htppapp
 
 import (
 	"api_gate_way/internal/app/router"
+	alarm_usecase "api_gate_way/internal/usecase/alarm"
 	speaker_use_case "api_gate_way/internal/usecase/speaker"
 	"api_gate_way/internal/usecase/tv_use_case"
 	"api_gate_way/internal/usecase/user_usecase"
@@ -17,8 +18,8 @@ type App struct {
 
 func NewApp(logger *slog.Logger, port string, handlerService user_usecase.User,
 	tv *tv_use_case.TvUseCaseImpl,
-	speaker speaker_use_case.SpeakerUseCaseImpl) *App {
-	sever := router.RegisterRouter(handlerService, *tv, speaker)
+	speaker speaker_use_case.SpeakerUseCaseImpl, alarm alarm_usecase.Alarm) *App {
+	sever := router.RegisterRouter(handlerService, *tv, speaker, alarm)
 	return &App{
 		Port:   port,
 		Server: sever,

@@ -1,6 +1,4 @@
-package alarm_entity
-
-import "time"
+package entity
 
 type (
 	AlarmStatusMessage struct {
@@ -8,7 +6,7 @@ type (
 	}
 
 	AddSmartAlarmReq struct {
-		UserID     string `bson:"user_id" json:"user_id"`
+		UserID     string `bson:"-" json:"-"`
 		DeviceName string `bson:"device_name" json:"device_name"`
 		ModelName  string `bson:"model_name" json:"model_name"`
 	}
@@ -24,7 +22,7 @@ type (
 	}
 
 	CreateAlarmClockReq struct {
-		UserID     string `bson:"user_id" json:"user_id"`
+		UserID     string `bson:"-" json:"-"`
 		ClockTime  string `bson:"clock_time" json:"clock_time"`
 		DeviceName string `bson:"device_name" json:"device_name"`
 	}
@@ -45,8 +43,8 @@ type (
 	}
 
 	Alarm struct {
-		AlarmTime     time.Time `bson:"alarm_time" json:"alarm_time"`
-		RemainingTime time.Time `bson:"remaining_time" json:"remaining_time"`
+		AlarmTime     string `bson:"alarm_time" json:"alarm_time"`
+		RemainingTime string `bson:"remaining_time" json:"remaining_time"`
 	}
 
 	RemainingTimRes struct {

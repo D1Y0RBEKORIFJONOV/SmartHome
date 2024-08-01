@@ -15,6 +15,267 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/alarm/clock": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the remaining time for the alarm",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "Get Remaining Time",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name of the device",
+                        "name": "device_name",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.RemainingTimRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new alarm clock",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "Create Alarm Clock",
+                "parameters": [
+                    {
+                        "description": "Create Alarm Clock Request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.CreateAlarmClockReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.StatusMessage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/alarm/open/curtain": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Open the curtain",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "Open Curtain",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name of the device",
+                        "name": "device_name",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Open command",
+                        "name": "open",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.StatusMessage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/alarm/open/door": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Open the alarm",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "Open OpenDoor",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name of the device",
+                        "name": "device_name",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Open command",
+                        "name": "open",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.StatusMessage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/alarm/register": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Add a new smart alarm",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "AddAlarm",
+                "parameters": [
+                    {
+                        "description": "Add Smart Alarm Request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.AddSmartAlarmReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.StatusMessage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/speaker/channel": {
             "post": {
                 "security": [
@@ -33,7 +294,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "television"
+                    "speaker"
                 ],
                 "summary": "AddChannel",
                 "parameters": [
@@ -85,7 +346,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "television"
+                    "speaker"
                 ],
                 "summary": "DeleteChannel",
                 "parameters": [
@@ -139,7 +400,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "television"
+                    "speaker"
                 ],
                 "summary": "PreviousAndNext",
                 "parameters": [
@@ -190,7 +451,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "television"
+                    "speaker"
                 ],
                 "summary": "OpenSpeaker",
                 "parameters": [
@@ -295,7 +556,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "television"
+                    "speaker"
                 ],
                 "summary": "GetChannels",
                 "responses": {
@@ -338,7 +599,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "television"
+                    "speaker"
                 ],
                 "summary": "ControlVoice",
                 "parameters": [
@@ -1232,6 +1493,17 @@ const docTemplate = `{
                 }
             }
         },
+        "entity.AddSmartAlarmReq": {
+            "type": "object",
+            "properties": {
+                "device_name": {
+                    "type": "string"
+                },
+                "model_name": {
+                    "type": "string"
+                }
+            }
+        },
         "entity.AddSpeakerReq": {
             "type": "object",
             "properties": {
@@ -1248,6 +1520,17 @@ const docTemplate = `{
                 }
             }
         },
+        "entity.Alarm": {
+            "type": "object",
+            "properties": {
+                "alarm_time": {
+                    "type": "string"
+                },
+                "remaining_time": {
+                    "type": "string"
+                }
+            }
+        },
         "entity.Channel": {
             "type": "object",
             "properties": {
@@ -1255,6 +1538,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "channel_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.CreateAlarmClockReq": {
+            "type": "object",
+            "properties": {
+                "clock_time": {
+                    "type": "string"
+                },
+                "device_name": {
                     "type": "string"
                 }
             }
@@ -1364,6 +1658,20 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "type": "string"
+                }
+            }
+        },
+        "entity.RemainingTimRes": {
+            "type": "object",
+            "properties": {
+                "alarms": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.Alarm"
+                    }
+                },
+                "count": {
+                    "type": "integer"
                 }
             }
         },

@@ -12,4 +12,15 @@ p,user, /tv/*, POST
 p,user, /tv/*, PUT
 p, user, /tv/*, DELETE
 p, user, /tv/*, (.*)
+p, user, /alarm/*, GET
+p, user, /alarm/*, POST
+p, user, /alarm/*, PUT
+p, user, /alarm/*, DELETE
+p, user,/alarm/*, (.*)
+
+p, user, /speaker/*, GET
+p, user, /speaker/*, POST
+p, user, /speaker/*, PUT
+p, user, /speaker/*, DELETE
+p, user, /speaker/*, (.*)
 p, unauthorized, /swagger/*, GET

@@ -5,16 +5,6 @@ import (
 	"context"
 )
 
-//service TVService {
-//rpc AddTV(AddTVReq) returns (TvStatusMessage);
-//rpc AddChannel(AddChannelReq) returns (TvStatusMessage);
-//rpc GetUserChannel(GetUserChannelReq) returns (GetUserChannelRes);
-//rpc DeleteChannel(DeleteChannelReq) returns (TvStatusMessage);
-//rpc DownOrUpVVoiceTv(DownOrUpVVoiceTvReq) returns (DownOrUpVVoiceTvRes);
-//rpc PreviousAndNext(PreviousAndNextReq) returns (PreviousAndNextRes);
-//rpc OnAndOffUserTv(OnAndOffUserTvReq) returns (OnAndOffUserTvRes);
-//}
-
 type TvUseCase interface {
 	AddTV(ctx context.Context, req *entity.AddTVReq) (*entity.StatusMessage, error)
 	OpenTV(ctx context.Context, boolStr string, id string) (*entity.StatusMessage, error)
